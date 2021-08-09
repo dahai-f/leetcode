@@ -4,23 +4,16 @@ impl Solution {
         let mut cur_s_char = s_chars.next();
         for word in words {
             if cur_s_char.is_none() {
-                break;
+                return true;
             }
-            let mut word_chars = word.chars();
-            loop {
-                match (cur_s_char, word_chars.next()) {
-                    (Some(s_char), Some(word_char)) => {
-                        if s_char != word_char {
-                            return false;
-                        }
-                        cur_s_char = s_chars.next();
-                    }
-                    (None, Some(_word_char)) => {
+            for word_char in word.chars() {
+                if let Some(s_char) = cur_s_char {
+                    if s_char != word_char {
                         return false;
                     }
-                    (_, None) => {
-                        break;
-                    }
+                    cur_s_char = s_chars.next();
+                } else {
+                    return false;
                 }
             }
         }
@@ -58,5 +51,9 @@ fn main() {
             .iter()
             .map(|&s| s.to_owned())
             .collect(),
+    ));
+    assert!(Solution::is_prefix_string(
+        "z".to_owned(),
+        vec!["z"].iter().map(|&s| s.to_owned()).collect(),
     ));
 }
