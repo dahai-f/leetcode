@@ -16,16 +16,12 @@ impl Solution {
         }
     }
 
-    fn gcd(mut a: usize, mut b: usize) -> usize {
-        if a < b {
-            std::mem::swap(&mut a, &mut b);
+    fn gcd(a: usize, b: usize) -> usize {
+        if b > 0 {
+            Self::gcd(b, a % b)
+        } else {
+            a
         }
-        while b != 0 {
-            let r = a % b;
-            a = b;
-            b = r;
-        }
-        a
     }
 }
 
