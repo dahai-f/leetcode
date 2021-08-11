@@ -7,16 +7,22 @@ impl Solution {
         let mut right = numbers.len().wrapping_sub(1);
         let mut left = 0;
         while left < right {
-            let sum = numbers[left] + numbers[right];
-            match sum.cmp(&target) {
-                Ordering::Less => {
-                    left += 1;
-                }
-                Ordering::Equal => {
-                    return vec![left as i32 + 1, right as i32 + 1];
-                }
-                Ordering::Greater => {
-                    right = right.wrapping_sub(1);
+            let mid = left + (right - left) / 2;
+            if numbers[left] + numbers[mid] > target {
+                right = mid - 1;
+            } else if numbers[mid] + numbers[right] < target {
+                left = mid + 1;
+            } else {
+                match (numbers[left] + numbers[right]).cmp(&target) {
+                    Ordering::Less => {
+                        left += 1;
+                    }
+                    Ordering::Equal => {
+                        return vec![left as i32 + 1, right as i32 + 1];
+                    }
+                    Ordering::Greater => {
+                        right = right.wrapping_sub(1);
+                    }
                 }
             }
         }
