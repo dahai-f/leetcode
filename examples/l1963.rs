@@ -1,4 +1,4 @@
-/// [1963. 使字符串平衡的最小交换次数](https://leetcode-cn.com/problems/remove-stones-to-minimize-the-total/)
+/// [1963. 使字符串平衡的最小交换次数](https://leetcode-cn.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/)
 
 impl Solution {
     pub fn min_swaps(s: String) -> i32 {}
