@@ -14,7 +14,11 @@ impl Solution {
                     Some(max) => max,
                 }
             };
-            piles.push(max - max / 2);
+            let new = max - max / 2;
+            piles.push(new);
+            if new == max {
+                break;
+            }
             i += 1;
         }
         piles.iter().sum()
