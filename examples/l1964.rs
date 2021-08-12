@@ -1,37 +1,35 @@
-#![feature(map_first_last)]
-
-/// [1964. 找出到每个位置为止最长的有效障碍赛跑路线](https://leetcode-cn.com/problems/remove-stones-to-minimize-the-total/)
-use std::collections::BTreeMap;
+/// [1964. 找出到每个位置为止最长的有效障碍赛跑路线](https://leetcode-cn.com/problems/find-the-longest-valid-obstacle-course-at-each-position/)
 
 impl Solution {
-    pub fn longest_obstacle_course_at_each_position(obstacles: Vec<i32>) -> Vec<i32> {
-        let mut ans = Vec::with_capacity(obstacles.len());
-        let mut max_of_obstacle = BTreeMap::new();
-        for i in 0..obstacles.len() {
-            let cur = obstacles[i];
-            let mut b = max_of_obstacle.split_off(&cur);
-            let length = match b.pop_first() {
-                None => match max_of_obstacle.last_key_value() {
-                    None => 0,
-                    Some((_obstacle, &max_length)) => max_length,
-                },
-                Some((obstacle, max_length)) => {
-                    if obstacle != cur {
-                        match max_of_obstacle.last_key_value() {
-                            None => 0,
-                            Some((_obstacle, &max_length)) => max_length,
-                        }
-                    } else {
-                        max_length
-                    }
+    pub fn longest_obstacle_course_at_each_position(mut obstacles: Vec<i32>) -> Vec<i32> {
+        let mut max_obstacle_pairs: Vec<(i32, i32)> = Vec::with_capacity(obstacles.len());
+        for cur in obstacles.iter_mut() {
+            let mut length = None;
+            for i in (0..max_obstacle_pairs.len()).rev() {
+                let (max, obstacle) = max_obstacle_pairs[i];
+                if obstacle <= *cur {
+                    let new_max = max + 1;
+                    let pos = match max_obstacle_pairs
+                        .binary_search_by_key(&new_max, |(max, _obstacle)| *max)
+                    {
+                        Ok(i) => i,
+                        Err(i) => i,
+                    };
+                    max_obstacle_pairs.insert(pos, (new_max, *cur));
+                    length = Some(new_max);
+                    break;
                 }
+            }
+            let length = match length {
+                None => {
+                    max_obstacle_pairs.insert(0, (1, *cur));
+                    1
+                }
+                Some(length) => length,
             };
-            let length = length + 1;
-            b.insert(cur, length);
-            ans.push(length);
-            max_of_obstacle.append(&mut b);
+            *cur = length;
         }
-        ans
+        obstacles
     }
 }
 
