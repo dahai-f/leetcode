@@ -1,25 +1,32 @@
 /// [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
+use std::cell::UnsafeCell;
+use std::cmp::Ordering;
 
 impl Solution {
-    pub fn remove_nth_from_end(mut head: Option<Box<ListNode>>, n: i32) -> Option<Box<ListNode>> {
+    pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<ListNode>> {
         let mut diff = 0;
-        let mut low = &head;
-        let mut fast = &head;
-        while let Some(f) = fast {
-            if diff < n {
+        let head = UnsafeCell::new(head);
+        let mut low = unsafe { &mut *head.get() };
+        let mut fast = unsafe { &*head.get() };
+
+        while let Some(f) = fast.as_ref() {
+            if diff <= n {
                 diff += 1;
             } else {
-                low = &low.as_ref().unwrap().next;
+                low = &mut low.as_mut().unwrap().next;
             }
             fast = &f.next;
         }
-        if diff < n {
-            head = None;
-        } else {
-            let nn = low.as_ref().unwrap().next.as_ref().unwrap().next;
-            low.as_mut().unwrap().next = nn;
+
+        match diff.cmp(&n) {
+            Ordering::Less => None,
+            Ordering::Equal => low.take().unwrap().next,
+            Ordering::Greater => {
+                let next = low.as_mut().unwrap().next.take();
+                low.as_mut().unwrap().next = next.unwrap().next;
+                head.into_inner()
+            }
         }
-        head
     }
 }
 
@@ -38,14 +45,6 @@ impl ListNode {
     fn new(val: i32) -> Self {
         ListNode { next: None, val }
     }
-
-    fn get(&self, index: usize) -> Option<Box<ListNode>> {
-        let mut cur = self;
-        for _i in 0..index {
-            cur = cur.next.as_ref().unwrap();
-        }
-        Some(Box::new(cur.clone()))
-    }
 }
 
 impl<const S: usize> From<&[i32; S]> for Box<ListNode> {
@@ -61,6 +60,10 @@ impl<const S: usize> From<&[i32; S]> for Box<ListNode> {
 }
 
 fn main() {
+    assert_eq!(
+        Solution::remove_nth_from_end(Some(Box::<ListNode>::from(&[1, 2])), 2),
+        Some(Box::<ListNode>::from(&[2]))
+    );
     assert_eq!(
         Solution::remove_nth_from_end(Some(Box::<ListNode>::from(&[1, 2, 3, 4, 5])), 2),
         Some(Box::<ListNode>::from(&[1, 2, 3, 5]))
