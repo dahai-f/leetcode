@@ -1,32 +1,26 @@
 /// [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
 use std::cell::UnsafeCell;
-use std::cmp::Ordering;
 
 impl Solution {
     pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<ListNode>> {
-        let mut diff = 0;
-        let head = UnsafeCell::new(head);
-        let mut low = unsafe { &mut *head.get() };
-        let mut fast = unsafe { &*head.get() };
+        let mut dummy = Box::new(ListNode::new(0));
+        dummy.next = head;
+        let dummy = UnsafeCell::new(Some(dummy));
+        let mut low = unsafe { &mut *dummy.get() };
+        let mut fast = &unsafe { &*dummy.get() }.as_ref().unwrap().next;
+        for _i in 0..n {
+            fast = &fast.as_ref().unwrap().next;
+        }
 
         while let Some(f) = fast.as_ref() {
-            if diff <= n {
-                diff += 1;
-            } else {
-                low = &mut low.as_mut().unwrap().next;
-            }
             fast = &f.next;
+            low = &mut low.as_mut().unwrap().next;
         }
 
-        match diff.cmp(&n) {
-            Ordering::Less => None,
-            Ordering::Equal => low.take().unwrap().next,
-            Ordering::Greater => {
-                let next = low.as_mut().unwrap().next.take();
-                low.as_mut().unwrap().next = next.unwrap().next;
-                head.into_inner()
-            }
-        }
+        let low = low.as_mut().unwrap();
+        let low_next = low.next.take();
+        low.next = low_next.unwrap().next;
+        dummy.into_inner().unwrap().next
     }
 }
 
