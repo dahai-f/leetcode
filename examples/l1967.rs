@@ -1,4 +1,4 @@
-//! [5843. 作为子字符串出现在单词中的字符串数目](https://leetcode-cn.com/problems/number-of-strings-that-appear-as-substrings-in-word/)
+//! [1967. 作为子字符串出现在单词中的字符串数目](https://leetcode-cn.com/problems/number-of-strings-that-appear-as-substrings-in-word/)
 
 impl Solution {
     pub fn num_of_strings(patterns: Vec<String>, word: String) -> i32 {

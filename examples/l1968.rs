@@ -1,4 +1,4 @@
-//! [5832. 构造元素不等于两相邻元素平均值的数组](https://leetcode-cn.com/contest/weekly-contest-254/problems/array-with-elements-not-equal-to-average-of-neighbors/)
+//! [1968. 构造元素不等于两相邻元素平均值的数组](https://leetcode-cn.com/problems/array-with-elements-not-equal-to-average-of-neighbors/)
 use std::cmp::Ordering;
 
 impl Solution {

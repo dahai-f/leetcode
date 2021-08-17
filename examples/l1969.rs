@@ -1,4 +1,4 @@
-//! [5844. 数组元素的最小非零乘积](https://leetcode-cn.com/problems/minimum-non-zero-product-of-the-array-elements/)
+//! [1969. 数组元素的最小非零乘积](https://leetcode-cn.com/problems/minimum-non-zero-product-of-the-array-elements/)
 impl Solution {
     pub fn min_non_zero_product(p: i32) -> i32 {}
 }
