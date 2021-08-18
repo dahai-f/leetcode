@@ -2,19 +2,20 @@
 
 impl Solution {
     pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        if let Some(head) = head {
-            if let Some(next) = head.next {
-                let new_head = Self::reverse_list(next);
-                head.next
+        if let Some(mut head) = head {
+            if let Some(mut next) = head.next.take() {
+                let n = next.as_mut() as *mut ListNode;
+                let new_head = Self::reverse_list(Some(next));
+                unsafe {
+                    (*n).next = Some(head);
+                }
                 new_head
+            } else {
+                Some(head)
             }
-            else {
-                None
-            }
+        } else {
+            None
         }
-         else {
-             None
-         }
     }
 }
 
