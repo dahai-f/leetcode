@@ -3,15 +3,22 @@
 impl Solution {
     pub fn combine(n: i32, k: i32) -> Vec<Vec<i32>> {
         let mut temp: Vec<i32> = (1..=k).collect();
-        let mut res = vec![];
-        let mut j = 0;
-        while j < k {
-            res.push(temp.clone());
-
-            ++temp[j];
-            j -= 1;
+        let k = k as usize;
+        let mut result = vec![];
+        loop {
+            result.push(temp.clone());
+            for i in 0..=k {
+                if i == k {
+                    return result;
+                }
+                if (i == k - 1 && temp[i] < n) || (i < k - 1 && temp[i] + 1 != temp[i + 1]) {
+                    temp[i] += 1;
+                    break;
+                } else {
+                    temp[i] = i as i32 + 1;
+                }
+            }
         }
-        res
     }
 }
 
