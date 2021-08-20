@@ -2,16 +2,24 @@
 
 impl Solution {
     pub fn combine(n: i32, k: i32) -> Vec<Vec<i32>> {
+        let mut temp = vec![];
+        let mut res = vec![];
+        Self::dfs(n, k, &mut temp, &mut res);
+        res
+    }
+
+    fn dfs(n: i32, k: i32, temp: &mut Vec<i32>, res: &mut Vec<Vec<i32>>) {
         if n < k || k < 1 {
-            return vec![vec![]];
+            res.push(temp.clone());
+            return;
         }
-        let mut with_me = Self::combine(n - 1, k - 1);
-        with_me.iter_mut().for_each(|case| case.push(n));
+
+        temp.push(n);
+        Self::dfs(n - 1, k - 1, temp, res);
+        temp.pop();
         if n > k {
-            let mut with_out_me = Self::combine(n - 1, k);
-            with_me.append(&mut with_out_me);
+            Self::dfs(n - 1, k, temp, res);
         }
-        with_me
     }
 }
 
@@ -19,7 +27,12 @@ struct Solution;
 
 fn is_correct(vec: Vec<Vec<i32>>, n: usize, k: usize) -> bool {
     let num = (0..k).map(|i| n - i).product::<usize>() / (1..=k).product::<usize>();
-    vec.len() == num
+    if vec.len() != num {
+        println!("{:?}", vec);
+        false
+    } else {
+        true
+    }
 }
 
 fn main() {
