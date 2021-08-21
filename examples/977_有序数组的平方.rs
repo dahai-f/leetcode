@@ -1,4 +1,4 @@
-/// [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/)
+//! [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/)
 
 impl Solution {
     pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {

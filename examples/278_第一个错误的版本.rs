@@ -1,3 +1,5 @@
+//! [278. 第一个错误的版本](https://leetcode-cn.com/problems/first-bad-version/)
+
 impl Solution {
     pub fn first_bad_version(&self, n: i32) -> i32 {
         let mut left = 0;

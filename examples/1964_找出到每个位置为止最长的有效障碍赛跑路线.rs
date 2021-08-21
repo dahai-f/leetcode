@@ -1,4 +1,4 @@
-/// [1964. 找出到每个位置为止最长的有效障碍赛跑路线](https://leetcode-cn.com/problems/find-the-longest-valid-obstacle-course-at-each-position/)
+//! [1964. 找出到每个位置为止最长的有效障碍赛跑路线](https://leetcode-cn.com/problems/find-the-longest-valid-obstacle-course-at-each-position/)
 use std::cmp::Ordering::{Greater, Less};
 
 impl Solution {

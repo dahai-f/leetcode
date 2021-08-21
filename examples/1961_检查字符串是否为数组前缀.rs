@@ -1,5 +1,4 @@
-/// 1961. 检查字符串是否为数组前缀
-/// https://leetcode-cn.com/problems/check-if-string-is-a-prefix-of-array/
+//! [1961. 检查字符串是否为数组前缀](https://leetcode-cn.com/problems/check-if-string-is-a-prefix-of-array/)
 
 impl Solution {
     pub fn is_prefix_string(s: String, words: Vec<String>) -> bool {

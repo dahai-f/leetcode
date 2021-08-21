@@ -1,4 +1,4 @@
-/// [1962. 移除石子使总数最小](https://leetcode-cn.com/problems/remove-stones-to-minimize-the-total/)
+//! [1962. 移除石子使总数最小](https://leetcode-cn.com/problems/remove-stones-to-minimize-the-total/)
 use std::collections::BinaryHeap;
 
 impl Solution {
