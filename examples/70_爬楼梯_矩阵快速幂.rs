@@ -5,7 +5,7 @@ use std::ops::{AddAssign, Deref, DerefMut, Mul};
 #[derive(Clone)]
 struct Matrix<T: Clone, const R: usize, const C: usize>([[T; C]; R]);
 
-impl<T: Clone + Copy + Default + Mul<Output = T> + AddAssign + From<i32>, const RC: usize>
+impl<T: Clone + Copy + Default + Mul<Output = T> + AddAssign + From<u8>, const RC: usize>
     Matrix<T, RC, RC>
 {
     fn identity() -> Self {
