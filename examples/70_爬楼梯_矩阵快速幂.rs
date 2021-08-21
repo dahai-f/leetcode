@@ -17,18 +17,17 @@ impl<T: Clone + Copy + Default + Mul<Output = T> + AddAssign + From<u8>, const R
     }
 
     fn pow(mut self, mut n: usize) -> Self {
-        let mut mul = self.clone();
-        self = Matrix::identity();
+        let mut result = Matrix::identity();
         while n > 0 {
             if n & 1 != 0 {
-                self = &self * &mul;
+                result = &result * &self;
             }
             n >>= 1;
             if n > 0 {
-                mul = &mul * &mul;
+                self = &self * &self;
             }
         }
-        self
+        result
     }
 }
 
