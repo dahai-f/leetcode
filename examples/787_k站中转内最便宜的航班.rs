@@ -6,8 +6,8 @@ impl Solution {
         let src = src as usize;
         let dst = dst as usize;
         let mut distance = vec![i32::MAX; n];
-        let mut distance_back = vec![i32::MAX; n];
         distance[src] = 0;
+        let mut distance_back = distance.clone();
         for _i in 0..=k {
             for x in flights.iter() {
                 let from = x[0] as usize;
