@@ -2,14 +2,29 @@
 
 impl Solution {
     pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {
-        let mut min_len = i32::MAX;
+        let mut min_len = usize::MAX;
         let mut left = 0;
         let mut right = 0;
+        let mut sum = 0;
+        while right < nums.len() {
+            sum += nums[right];
+            right += 1;
+            if sum >= target {
+                while sum >= target && left < nums.len() {
+                    sum -= nums[left];
+                    left += 1;
+                }
+                let len = right - left + 1;
+                if len < min_len {
+                    min_len = len;
+                }
+            }
+        }
 
-        if min_len == i32::MAX {
+        if min_len == usize::MAX {
             0
         } else {
-            min_len
+            min_len as i32
         }
     }
 }
