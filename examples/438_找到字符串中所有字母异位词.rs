@@ -6,21 +6,42 @@ impl Solution {
         let mut diff = [0; 26];
         let s = s.as_bytes();
         let p = p.as_bytes();
+        let mut not_zero_count = 0;
+
+        fn add_diff(byte: u8, diff: &mut [i32], not_zero_count: &mut usize) {
+            let d = &mut diff[(byte - b'a') as usize];
+            *d += 1;
+            if *d == 0 {
+                *not_zero_count -= 1;
+            } else if *d == 1 {
+                *not_zero_count += 1;
+            }
+        }
+        fn sub_diff(byte: u8, diff: &mut [i32], not_zero_count: &mut usize) {
+            let d = &mut diff[(byte - b'a') as usize];
+            *d -= 1;
+            if *d == 0 {
+                *not_zero_count -= 1;
+            } else if *d == -1 {
+                *not_zero_count += 1;
+            }
+        }
+
         for &x in p {
-            diff[(x - b'a') as usize] -= 1;
+            sub_diff(x, &mut diff, &mut not_zero_count);
         }
         let k = p.len().min(s.len());
-        for i in 0..k {
-            diff[(s[i] - b'a') as usize] += 1;
+        for &x in s.iter().take(k) {
+            add_diff(x, &mut diff, &mut not_zero_count);
         }
-        for i in k..=s.len() {
-            let sub = p.iter().all(|p| diff[(*p - b'a') as usize] == 0);
-            if sub {
-                result.push((i - k) as i32);
-            }
-            if i < s.len() {
-                diff[(s[i] - b'a') as usize] += 1;
-                diff[(s[i - k] - b'a') as usize] -= 1;
+        if not_zero_count == 0 {
+            result.push(0);
+        }
+        for i in 0..(s.len() - k) {
+            add_diff(s[i + k], &mut diff, &mut not_zero_count);
+            sub_diff(s[i], &mut diff, &mut not_zero_count);
+            if not_zero_count == 0 {
+                result.push((i + 1) as i32);
             }
         }
         result
@@ -30,6 +51,10 @@ impl Solution {
 struct Solution;
 
 fn main() {
+    assert_eq!(
+        Solution::find_anagrams("baa".to_string(), "aa".to_string()),
+        vec![1]
+    );
     assert_eq!(
         Solution::find_anagrams("cbaebabacd".to_string(), "abc".to_string()),
         vec![0, 6]
