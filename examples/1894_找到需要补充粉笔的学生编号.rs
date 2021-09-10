@@ -3,15 +3,24 @@
 use std::cmp::Ordering;
 
 impl Solution {
-    pub fn chalk_replacer(chalk: Vec<i32>, k: i32) -> i32 {
-        let mut pre_sum = Vec::with_capacity(chalk.len());
-        chalk.iter().fold(0u64, |total, cur| {
-            let new_total = total.checked_add(*cur as u64).unwrap();
-            pre_sum.push(new_total);
-            new_total
-        });
-        let k = k as u64 % pre_sum.last().unwrap();
-        let ans = pre_sum
+    pub fn chalk_replacer(mut chalk: Vec<i32>, mut k: i32) -> i32 {
+        let mut pre_sum = 0i32;
+        for (i, x) in chalk.iter_mut().enumerate() {
+            pre_sum = match pre_sum.checked_add(*x) {
+                None => {
+                    return i as i32;
+                }
+                Some(pre_sum) => {
+                    if pre_sum > k {
+                        return i as i32;
+                    }
+                    pre_sum
+                }
+            };
+            *x = pre_sum;
+        }
+        k %= chalk.last().unwrap();
+        let ans = chalk
             .binary_search_by(|&pre_sum| {
                 if pre_sum <= k {
                     Ordering::Less
@@ -20,7 +29,7 @@ impl Solution {
                 }
             })
             .unwrap_err();
-        assert!(ans < pre_sum.len());
+        assert!(ans < chalk.len());
         ans as i32
     }
 }
